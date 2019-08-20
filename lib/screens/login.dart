@@ -134,6 +134,7 @@ class _MyLoginState extends State<MyLogin> {
                   'name',
                   doc.data['name'] + " " + doc.data['surname'],
                 );
+                pref.setInt('star', doc.data['currentStar']);
                 MaterialPageRoute materialPageRoute = MaterialPageRoute(
                     builder: (BuildContext context) => MyUserMain());
                 Navigator.of(context).pushAndRemoveUntil(
