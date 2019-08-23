@@ -106,6 +106,7 @@ class _MyLoginState extends State<MyLogin> {
   Future<void> checkLogin() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String accountKey = pref.getString('accountKey');
+
     if (accountKey != null) {
       MaterialPageRoute materialPageRoute =
           MaterialPageRoute(builder: (BuildContext context) => MyUserMain());
@@ -119,21 +120,24 @@ class _MyLoginState extends State<MyLogin> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     // print("username = $username , password = $password");
     db
-        .collection("Accounts")
-        .where("username", isEqualTo: username)
+        .collection("CustomerAccounts")
+        .where("tel", isEqualTo: username)
         .where("password", isEqualTo: password)
         .snapshots()
         .listen(
       (data) {
+        print("username = $username , password = $password");
         if (data.documents.isEmpty == false) {
           data.documents.forEach(
             (doc) {
               if (doc.exists) {
                 pref.setString('accountKey', doc.documentID);
+                print("------------------------------------ ${doc.documentID}");
                 pref.setString(
                   'name',
                   doc.data['name'] + " " + doc.data['surname'],
                 );
+                print(pref.getString('accountKey'));
                 pref.setInt('star', doc.data['currentStar']);
                 MaterialPageRoute materialPageRoute = MaterialPageRoute(
                     builder: (BuildContext context) => MyUserMain());
