@@ -28,7 +28,12 @@ class _JobListState extends State<JobList> {
   }
 
   Future<void> loadJobs() async {
-    db.collection("Jobs").where("status", isEqualTo: true).snapshots().listen(
+    db
+        .collection("Position")
+        .where("status", isEqualTo: true)
+        .orderBy("orderid")
+        .snapshots()
+        .listen(
       (onData) {
         jobsName = [];
         onData.documents.forEach(
@@ -39,9 +44,9 @@ class _JobListState extends State<JobList> {
             dataFinal.addAll(dataKey);
             dataFinal.addAll(data.data);
             db
-                .collection("UserJobStar")
+                .collection("CustomerPositionStar")
                 .where("userId", isEqualTo: userId)
-                .where("jobId", isEqualTo: data.documentID)
+                .where("positionId", isEqualTo: data.documentID)
                 .snapshots()
                 .listen(
               (doc) {
@@ -77,6 +82,11 @@ class _JobListState extends State<JobList> {
     );
   }
 
+  Future<void> setJobKey(String key) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString("positionKey", key);
+  }
+
   Widget jobList() {
     return ListView(
       shrinkWrap: true,
@@ -98,9 +108,11 @@ class _JobListState extends State<JobList> {
         padding: EdgeInsets.all(10.0),
         onPressed: () {
           setState(() {
+            setJobKey(item['key']);
             MaterialPageRoute materialPageRoute = MaterialPageRoute(
-                builder: (BuildContext context) => MyWorldList(item['key']));
-
+              builder: (BuildContext context) =>
+                  MyWorldList(item['key'], item['name']),
+            );
             Navigator.of(context).push(materialPageRoute);
           });
         },

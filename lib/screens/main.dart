@@ -19,7 +19,7 @@ class _MyUserMainState extends State<MyUserMain> {
 
   String userId = "";
   Widget userHeader = UserInfoHeader();
-  Widget showWidget = JobList();
+  Widget jobList = JobList();
 
   Future<void> logout() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -46,6 +46,7 @@ class _MyUserMainState extends State<MyUserMain> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
         title: Text("Winner English @Work"),
         actions: <Widget>[
           IconButton(
@@ -63,7 +64,7 @@ class _MyUserMainState extends State<MyUserMain> {
       body: Container(
         child: SingleChildScrollView(
           child: Column(
-            children: <Widget>[userHeader, showWidget],
+            children: <Widget>[userHeader, jobList],
           ),
         ),
       ),

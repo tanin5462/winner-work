@@ -126,19 +126,16 @@ class _MyLoginState extends State<MyLogin> {
         .snapshots()
         .listen(
       (data) {
-        print("username = $username , password = $password");
         if (data.documents.isEmpty == false) {
           data.documents.forEach(
             (doc) {
               if (doc.exists) {
                 pref.setString('accountKey', doc.documentID);
-                print("------------------------------------ ${doc.documentID}");
                 pref.setString(
                   'name',
                   doc.data['name'] + " " + doc.data['surname'],
                 );
-                print(pref.getString('accountKey'));
-                pref.setInt('star', doc.data['currentStar']);
+                pref.setInt('star', doc.data['star']);
                 MaterialPageRoute materialPageRoute = MaterialPageRoute(
                     builder: (BuildContext context) => MyUserMain());
                 Navigator.of(context).pushAndRemoveUntil(
